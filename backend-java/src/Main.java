@@ -25,7 +25,8 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static final int PORT = Integer.parseInt(System.getenv().getOrDefault("PORT", "5000"));
-    private static final String HOST = System.getenv().getOrDefault("HOST", "127.0.0.1");
+    private static final boolean RUNNING_ON_RENDER = "true".equalsIgnoreCase(System.getenv("RENDER"));
+    private static final String HOST = RUNNING_ON_RENDER ? "0.0.0.0" : System.getenv().getOrDefault("HOST", "127.0.0.1");
     private static final int DELIVERY_ESTIMATE_MINUTES = 40;
     private static final Pattern PHONE = Pattern.compile("^[0-9 +()\\-]{8,20}$");
     private static final List<Map<String, Object>> FOODS = seedFoods();
@@ -39,7 +40,7 @@ public class Main {
         server.createContext("/api", Main::handle);
         server.setExecutor(null);
         server.start();
-        System.out.println("Freshbite JDK API running at http://localhost:" + PORT);
+        System.out.println("Freshbite JDK API listening on " + HOST + ":" + PORT);
         System.out.println("Customer orders are saved in " + ORDERS_FILE.toAbsolutePath());
     }
 

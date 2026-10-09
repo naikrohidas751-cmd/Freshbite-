@@ -8,6 +8,6 @@ COPY frontend /app/frontend
 
 RUN javac --add-modules jdk.httpserver -d out src/Main.java
 
-ENV PORT=10000
+ENV PORT=10000 HOST=0.0.0.0
 EXPOSE 10000
 CMD ["java", "--add-modules", "jdk.httpserver", "-cp", "out", "Main"]
