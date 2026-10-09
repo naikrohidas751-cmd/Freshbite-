@@ -1,3 +1,9 @@
+# Object files
+*.o
+
+# Ada Library Information
+*.ali
+
 backend/node_modules/
 backend/.env
 backend-java/out/
