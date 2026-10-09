@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.Base64;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -23,15 +25,16 @@ import java.util.regex.Pattern;
 
 public class Main {
     private static final int PORT = Integer.parseInt(System.getenv().getOrDefault("PORT", "5000"));
+    private static final String HOST = System.getenv().getOrDefault("HOST", "127.0.0.1");
     private static final int DELIVERY_ESTIMATE_MINUTES = 40;
     private static final Pattern PHONE = Pattern.compile("^[0-9 +()\\-]{8,20}$");
     private static final List<Map<String, Object>> FOODS = seedFoods();
     private static final List<Map<String, Object>> ORDERS = new CopyOnWriteArrayList<>();
-    private static final Path ORDERS_FILE = Path.of("data", "orders.json");
+    private static final Path ORDERS_FILE = Path.of(System.getenv().getOrDefault("DATA_DIR", "data")).resolve("orders.json");
 
     public static void main(String[] args) throws IOException {
         loadOrders();
-        HttpServer server = HttpServer.create(new InetSocketAddress("127.0.0.1", PORT), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(HOST, PORT), 0);
         server.createContext("/", Main::handleAdminSite);
         server.createContext("/api", Main::handle);
         server.setExecutor(null);
@@ -42,16 +45,19 @@ public class Main {
 
     private static void handleAdminSite(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
+        boolean adminPage = "/admin".equals(path) || "/admin/".equals(path) || "/admin.js".equals(path);
+        if (adminPage && !requireAdminAccess(exchange)) return;
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
             send(exchange, 405, Map.of("message", "Method not allowed."));
             return;
         }
-        if ("/".equals(path) || "/admin".equals(path) || "/admin/".equals(path)) {
+        if ("/".equals(path) || "/shop".equals(path) || "/shop/".equals(path)
+                || "/index.html".equals(path) || "/freshbite-home.html".equals(path)) {
+            sendFile(exchange, Path.of("..", "frontend", "freshbite-home.html"), "text/html; charset=utf-8");
+        } else if ("/admin".equals(path) || "/admin/".equals(path)) {
             sendFile(exchange, Path.of("admin.html"), "text/html; charset=utf-8");
         } else if ("/admin.js".equals(path)) {
             sendFile(exchange, Path.of("admin.js"), "text/javascript; charset=utf-8");
-        } else if ("/shop".equals(path) || "/shop/".equals(path) || "/index.html".equals(path) || "/freshbite-home.html".equals(path)) {
-            sendFile(exchange, Path.of("..", "frontend", "freshbite-home.html"), "text/html; charset=utf-8");
         } else if ("/style.css".equals(path)) {
             sendFile(exchange, Path.of("..", "frontend", "style.css"), "text/css; charset=utf-8");
         } else if ("/freshbite-redesign.css".equals(path)) {
@@ -63,6 +69,31 @@ public class Main {
         }
     }
 
+    private static boolean requireAdminAccess(HttpExchange exchange) throws IOException {
+        String username = System.getenv("ADMIN_USERNAME");
+        String password = System.getenv("ADMIN_PASSWORD");
+        boolean runningOnRender = "true".equalsIgnoreCase(System.getenv("RENDER"));
+        if (username == null || username.isBlank() || password == null || password.isBlank()) {
+            if (!runningOnRender) return true;
+            send(exchange, 503, Map.of("message", "Admin authentication is not configured."));
+            return false;
+        }
+
+        String authorization = exchange.getRequestHeaders().getFirst("Authorization");
+        if (authorization != null && authorization.regionMatches(true, 0, "Basic ", 0, 6)) {
+            try {
+                String supplied = new String(Base64.getDecoder().decode(authorization.substring(6).trim()), StandardCharsets.UTF_8);
+                String expected = username + ":" + password;
+                if (MessageDigest.isEqual(expected.getBytes(StandardCharsets.UTF_8), supplied.getBytes(StandardCharsets.UTF_8))) return true;
+            } catch (IllegalArgumentException ignored) {
+                // Reject malformed Basic credentials below.
+            }
+        }
+
+        exchange.getResponseHeaders().set("WWW-Authenticate", "Basic realm=\"Freshbite Admin\", charset=\"UTF-8\"");
+        send(exchange, 401, Map.of("message", "Sign in to view the orders dashboard."));
+        return false;
+    }
     private static void sendFile(HttpExchange exchange, Path file, String contentType) throws IOException {
         if (!Files.isRegularFile(file)) {
             send(exchange, 500, Map.of("message", "Backend dashboard file is missing."));
@@ -93,6 +124,7 @@ public class Main {
             } else if ("POST".equals(method) && "/api/orders".equals(path)) {
                 createOrder(exchange);
             } else if ("GET".equals(method) && "/api/orders".equals(path)) {
+                if (!requireAdminAccess(exchange)) return;
                 send(exchange, 200, refreshOrdersFromDisk());
             } else {
                 send(exchange, 404, Map.of("message", "Route not found."));

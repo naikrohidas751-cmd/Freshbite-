@@ -1,4 +1,6 @@
-const API_BASE = "http://127.0.0.1:5000/api";
+const API_BASE = window.location.port === "5500"
+  ? "http://127.0.0.1:5000/api"
+  : "/api";
 const fallbackFoods = [
   { _id: "pizza-1", name: "Garden Fresh Pizza", category: "Pizza", price: 249, rating: 4.8, description: "Crispy crust, fresh vegetables and melted cheese.", image: "https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=700&q=80", tag: "BESTSELLER" },
   { _id: "burger-1", name: "Classic Smash Burger", category: "Burgers", price: 189, rating: 4.7, description: "Juicy patty, crunchy lettuce and house sauce.", image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80", tag: "POPULAR" },

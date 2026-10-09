@@ -1,0 +1,7 @@
+.git
+backend/.env
+backend/node_modules
+backend-java/data
+backend-java/out
+**/*.log
+.DS_Store
