@@ -46,8 +46,8 @@ public class Main {
 
     private static void handleAdminSite(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
-        boolean adminPage = "/admin".equals(path) || "/admin/".equals(path) || "/admin.js".equals(path);
-        if (adminPage && !requireAdminAccess(exchange)) return;
+
+
         if (!"GET".equalsIgnoreCase(exchange.getRequestMethod()) && !"HEAD".equalsIgnoreCase(exchange.getRequestMethod())) {
             send(exchange, 405, Map.of("message", "Method not allowed."));
             return;
@@ -91,7 +91,7 @@ public class Main {
             }
         }
 
-        exchange.getResponseHeaders().set("WWW-Authenticate", "Basic realm=\"Freshbite Admin\", charset=\"UTF-8\"");
+
         send(exchange, 401, Map.of("message", "Sign in to view the orders dashboard."));
         return false;
     }

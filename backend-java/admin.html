@@ -22,11 +22,26 @@
     @media(max-width:680px){.page{margin:20px 12px 45px;padding:23px 15px;border-radius:18px}.heading{gap:14px}.actions{gap:8px}.actions>*{flex:1;text-align:center}.order{padding:15px}.columns{grid-template-columns:1fr;gap:18px}}
     @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
   </style>
-</head>
+  <style>
+    .login-page{max-width:480px;margin:9vh auto;padding:36px;border:1px solid #303431;border-radius:22px;background:#111211;box-shadow:0 25px 80px rgba(0,0,0,.35)}
+    .login-sub{font-size:13px;line-height:1.6;color:#a3aaa5;margin:10px 0 24px}.login-form{display:grid;gap:16px}.login-form label{display:grid;gap:8px;color:#d9dfda;font-size:13px;font-weight:700}.login-form input{width:100%;border:1px solid #3a403c;border-radius:10px;background:#191c1a;color:#fff;padding:13px 14px;font:inherit;outline:none}.login-form input:focus{border-color:#39c98a;box-shadow:0 0 0 3px rgba(57,201,138,.13)}.login-button,.logout{min-height:42px;border:0;border-radius:10px;padding:11px 16px;font-weight:700;cursor:pointer}.login-button{background:#39c98a;color:#07140d}.login-button:hover{background:#55e0a0}.login-button:disabled{opacity:.65;cursor:wait}.login-status{min-height:20px;margin:0;color:#ff7b83;font-size:13px;line-height:1.5}.logout{background:#252a27;color:#e7ece8;border:1px solid #3a403c}.logout:hover{background:#333a35}.actions .logout{display:inline-flex;align-items:center;justify-content:center}.login-page h1{font-size:clamp(32px,5vw,45px);letter-spacing:-1.5px;margin:0;color:#f5f7f5}[hidden]{display:none!important}
+    @media(max-width:680px){.login-page{margin:8vh 14px;padding:26px 20px}.actions{flex-wrap:wrap}.actions>*{flex:1;text-align:center}}
+  </style></head>
 <body>
   <header class="top"><a class="brand" href="/shop"><span class="brand-mark">f</span>Freshbite<span class="brand-dot">.</span></a><span class="badge">ADMIN DASHBOARD</span></header>
-  <main class="page">
-    <div class="heading"><div><p class="eyebrow">CUSTOMER ORDERS</p><h1>Orders dashboard</h1><p class="sub">Customer contact details and the complete product snapshot saved with each order. Updates every 10 seconds.</p></div><div class="actions"><a class="front-link" href="/shop">Open front page</a><form class="refresh-form" action="/admin" method="get"><button id="refresh" class="refresh" type="submit">Refresh orders</button></form></div></div>
+  <main id="login-panel" class="login-page">
+    <p class="eyebrow">CUSTOMER ORDERS</p>
+    <h1>Welcome back</h1>
+    <p class="login-sub">Sign in to view customer details and order information.</p>
+    <form id="login-form" class="login-form">
+      <label for="username">Username<input id="username" name="username" autocomplete="username" required></label>
+      <label for="password">Password<input id="password" name="password" type="password" autocomplete="current-password" required></label>
+      <button id="login-button" class="login-button" type="submit">Sign in</button>
+      <p id="login-status" class="login-status" role="alert" aria-live="polite"></p>
+    </form>
+  </main>
+  <main id="dashboard" class="page" hidden>
+    <div class="heading"><div><p class="eyebrow">CUSTOMER ORDERS</p><h1>Orders dashboard</h1><p class="sub">Customer contact details and the complete product snapshot saved with each order. Updates every 10 seconds.</p></div><div class="actions"><a class="front-link" href="/shop">Open front page</a><button id="refresh" class="refresh" type="button">Refresh orders</button><button id="logout" class="logout" type="button">Sign out</button></div></div>
     <p id="status" class="status" role="status">Loading orders…</p>
     <section id="orders" class="orders" aria-live="polite"></section>
   </main>

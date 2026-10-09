@@ -1,6 +1,13 @@
+const loginPanel = document.getElementById("login-panel");
+const loginForm = document.getElementById("login-form");
+const loginStatus = document.getElementById("login-status");
+const loginButton = document.getElementById("login-button");
+const dashboard = document.getElementById("dashboard");
 const statusElement = document.getElementById("status");
 const listElement = document.getElementById("orders");
+const refreshButton = document.getElementById("refresh");
 const formatMoney = value => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(Number(value) || 0);
+let authorization = null;
 
 function text(parent, tag, value, className) {
   const element = document.createElement(tag);
@@ -13,7 +20,6 @@ function text(parent, tag, value, className) {
 function orderCard(order) {
   const card = document.createElement("article");
   card.className = "order";
-
   const head = document.createElement("div");
   head.className = "order-head";
   const identity = document.createElement("div");
@@ -78,34 +84,81 @@ function orderCard(order) {
   return card;
 }
 
-async function loadOrders() {
-  const refreshButton = document.getElementById("refresh");
-  refreshButton.disabled = true;
+function showLogin(message = "") {
+  authorization = null;
+  dashboard.hidden = true;
+  loginPanel.hidden = false;
+  loginStatus.textContent = message;
+  document.getElementById("password").value = "";
+}
+
+function showOrders(orders) {
+  listElement.replaceChildren();
+  if (orders.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "No customer orders yet. Orders submitted through the Freshbite frontend will appear here.";
+    listElement.appendChild(empty);
+  } else {
+    orders.forEach(order => listElement.appendChild(orderCard(order)));
+  }
   statusElement.className = "status";
-  statusElement.textContent = "Refreshing orders…";
-  try {
-    const response = await fetch("/api/orders", { cache: "no-store" });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.message || "Could not load orders.");
-    const orders = Array.isArray(data) ? data : [];
-    listElement.replaceChildren();
-    if (orders.length === 0) {
-      const empty = document.createElement("div");
-      empty.className = "empty";
-      empty.textContent = "No customer orders yet. Orders submitted through the Freshbite frontend will appear here.";
-      listElement.appendChild(empty);
-    } else {
-      orders.forEach(order => listElement.appendChild(orderCard(order)));
-    }
+  statusElement.textContent = `${orders.length} order${orders.length === 1 ? "" : "s"} found · Updated ${new Date().toLocaleTimeString()}.`;
+  loginPanel.hidden = true;
+  dashboard.hidden = false;
+}
+
+function errorMessage(status, data) {
+  if (status === 401) return "That username or password is incorrect. Please try again.";
+  if (status === 503) return "Admin login is not configured on the server. Contact the site administrator.";
+  return data.message || "Could not connect to the backend.";
+}
+
+async function loadOrders(auth = authorization, isLogin = false) {
+  if (!auth) return;
+  if (isLogin) loginButton.disabled = true;
+  else refreshButton.disabled = true;
+  if (!isLogin) {
     statusElement.className = "status";
-    statusElement.textContent = `${orders.length} order${orders.length === 1 ? "" : "s"} found · Updated ${new Date().toLocaleTimeString()}.`;
+    statusElement.textContent = "Refreshing orders...";
+  }
+  try {
+    const response = await fetch("/api/orders", { cache: "no-store", headers: { Authorization: auth } });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const message = errorMessage(response.status, data);
+      if (response.status === 401 && !isLogin) showLogin("Your sign-in expired. Please sign in again.");
+      else if (isLogin) loginStatus.textContent = message;
+      else {
+        statusElement.className = "status error";
+        statusElement.textContent = message;
+      }
+      return;
+    }
+    authorization = auth;
+    loginStatus.textContent = "";
+    showOrders(Array.isArray(data) ? data : []);
   } catch (error) {
-    statusElement.className = "status error";
-    statusElement.textContent = error.message || "Could not connect to the backend.";
+    const message = error.message || "Could not connect to the backend.";
+    if (isLogin) loginStatus.textContent = message;
+    else {
+      statusElement.className = "status error";
+      statusElement.textContent = message;
+    }
   } finally {
+    loginButton.disabled = false;
     refreshButton.disabled = false;
   }
 }
 
-loadOrders();
-window.setInterval(loadOrders, 10000);
+loginForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+  const bytes = new TextEncoder().encode(`${username}:${password}`);
+  const binary = Array.from(bytes, byte => String.fromCharCode(byte)).join("");
+  loadOrders(`Basic ${btoa(binary)}`, true);
+});
+refreshButton.addEventListener("click", () => loadOrders());
+document.getElementById("logout").addEventListener("click", () => showLogin("You have signed out."));
+window.setInterval(() => { if (authorization) loadOrders(); }, 10000);
