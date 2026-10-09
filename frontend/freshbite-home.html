@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Freshbite — feel-good food made fresh and delivered to your door." />
+  <meta name="theme-color" content="#e9fff6" />
+  <title>Freshbite | Fresh food, happy days</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="freshbite-redesign.css" />
+</head>
+<body class="freshbite-page">
+  <header class="site-topbar">
+    <a class="site-brand" href="#home" aria-label="Freshbite home"><span class="site-brand-mark">f</span>Freshbite<span class="site-brand-dot">.</span></a>
+    <nav class="site-nav" aria-label="Main navigation"><a href="#home">Home</a><a href="#menu">Explore menu</a><a href="#chefs">Our chefs</a><a href="#footer">Contact</a></nav>
+    <div class="site-header-actions"><button class="site-cart-button" id="cart-open" aria-label="Open cart"><span aria-hidden="true">🛒</span><span>Basket</span><span class="site-cart-count" id="cart-count">0</span></button><a class="site-header-order" href="#menu">Order now <span>↗</span></a></div>
+  </header>
+
+  <main id="home">
+    <section class="fresh-hero">
+      <div class="fresh-hero-copy">
+        <p class="fresh-kicker"><span></span> EASY WAY TO ORDER YOUR FOOD</p>
+        <h1>Order tasty &amp;<br />fresh food <em>anytime!</em></h1>
+        <p class="fresh-hero-description">Pick your favorite Freshbite meal and enjoy fresh, feel-good food delivered to your door.</p>
+        <div class="fresh-hero-actions"><a class="fresh-button fresh-button-orange" href="#menu">Explore our menu <span>↗</span></a><a class="fresh-text-link" href="#why-us">Why Freshbite? <span>→</span></a></div>
+        <div class="fresh-social-proof"><div class="fresh-proof-avatars"><span>F</span><span>J</span><span>M</span><span>+</span></div><div><div class="fresh-stars">★★★★★ <b>4.9/5</b></div><small>Loved by fresh food fans</small></div></div>
+      </div>
+      <div class="fresh-hero-art" aria-label="Fresh salad bowl" role="img">
+        <div class="fresh-hero-orbit"></div>
+        <div class="fresh-hero-photo"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=88" alt="Colorful fresh salad bowl" /></div>
+        <div class="fresh-float-card fresh-float-rating"><span class="fresh-rating-icon">★</span><div><b>Our happy customers</b><small>★★★★★ &nbsp; 2k+ food fans</small></div></div>
+        <div class="fresh-float-card fresh-float-delivery"><span>30–40</span><small>min delivery</small></div>
+        <span class="fresh-sparkle fresh-sparkle-one">✦</span><span class="fresh-sparkle fresh-sparkle-two">✳</span>
+      </div>
+    </section>
+
+    <section class="fresh-featured-picks" aria-label="Freshbite featured food">
+      <article class="fresh-pick-card"><a href="#menu" aria-label="See Green Goddess Bowl in the menu"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=260&q=80" alt="Green Goddess Bowl" loading="lazy" /><div class="fresh-pick-copy"><h3>Green Goddess Bowl</h3><span class="fresh-pick-stars">★★★★★</span><b>₹219</b><small>See menu <span>↗</span></small></div><span class="fresh-pick-cart" aria-hidden="true">↗</span></a></article>
+      <article class="fresh-pick-card"><a href="#menu" aria-label="See Garden Fresh Pizza in the menu"><img src="https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=260&q=80" alt="Garden Fresh Pizza" loading="lazy" /><div class="fresh-pick-copy"><h3>Garden Fresh Pizza</h3><span class="fresh-pick-stars">★★★★★</span><b>₹249</b><small>See menu <span>↗</span></small></div><span class="fresh-pick-cart" aria-hidden="true">↗</span></a></article>
+      <article class="fresh-pick-card"><a href="#menu" aria-label="See Chocolate Brownie in the menu"><img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=260&q=80" alt="Chocolate Brownie" loading="lazy" /><div class="fresh-pick-copy"><h3>Chocolate Brownie</h3><span class="fresh-pick-stars">★★★★★</span><b>₹119</b><small>See menu <span>↗</span></small></div><span class="fresh-pick-cart" aria-hidden="true">↗</span></a></article>
+      <a class="fresh-picks-more" href="#menu" aria-label="See all menu items">→</a>
+    </section>
+
+    <section class="fresh-benefits" id="why-us" aria-label="Why choose Freshbite">
+      <article><span class="fresh-benefit-icon">↗</span><div><b>Quick delivery</b><small>Fresh food, right on time</small></div></article>
+      <article><span class="fresh-benefit-icon">✿</span><div><b>Fresh ingredients</b><small>Goodness in every bite</small></div></article>
+      <article><span class="fresh-benefit-icon">♡</span><div><b>Made with care</b><small>Thoughtful meals, always</small></div></article>
+      <article class="fresh-benefit-rating"><span class="fresh-rating-stars">★★★★★</span><div><b>4.9 out of 5</b><small>From happy customers</small></div></article>
+    </section>
+
+    <section class="fresh-menu" id="menu">
+      <div class="fresh-section-heading"><div><p class="fresh-kicker">A MENU FULL OF GOODNESS</p><h2>Find your new <em>favorite.</em></h2><p>Fresh picks for whatever you're craving today.</p></div>
+        <label class="fresh-search"><span aria-hidden="true">⌕</span><input id="search-input" type="search" placeholder="Search the menu" aria-label="Search food" /></label>
+      </div>
+      <div class="fresh-filter-row"><div class="filters" id="category-filters"><button class="filter active" data-category="All">Everything</button><button class="filter" data-category="Pizza">Pizza</button><button class="filter" data-category="Burgers">Burgers</button><button class="filter" data-category="Bowls">Bowls</button><button class="filter" data-category="Desserts">Desserts</button></div><p id="api-status" class="api-status">Loading today’s menu…</p></div>
+      <div class="food-grid" id="food-grid"></div>
+    </section>
+
+    <section class="fresh-chefs" id="chefs">
+      <div class="fresh-section-heading"><div><p class="fresh-kicker">MADE BY PEOPLE WHO LOVE FOOD</p><h2>A little heart.<br /><em>A lot of flavor.</em></h2></div><p>Our kitchen team brings care, creativity, and seasonal ingredients to every plate.</p></div>
+      <div class="fresh-chef-grid">
+        <article class="fresh-chef-card"><img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=700&q=85" alt="Chef preparing a meal" loading="lazy" /><div><small>HEAD CHEF</small><h3>Fresh ideas, every day</h3><p>Thoughtful cooking with ingredients at their best.</p></div></article>
+        <article class="fresh-chef-card"><img src="https://images.unsplash.com/photo-1583394293214-28ded15ee548?auto=format&fit=crop&w=700&q=85" alt="Chef plating a dish" loading="lazy" /><div><small>OUR KITCHEN</small><h3>Made fresh to order</h3><p>Every meal is prepared with a little extra care.</p></div></article>
+        <article class="fresh-chef-card"><img src="https://images.unsplash.com/photo-1574969903809-3f7a1669e2d3?auto=format&fit=crop&w=700&q=85" alt="Chef in the Freshbite kitchen" loading="lazy" /><div><small>GOOD FOOD TEAM</small><h3>Here for your cravings</h3><p>From the first chop to your front door.</p></div></article>
+      </div>
+    </section>
+
+    <section class="fresh-story">
+      <div class="fresh-story-image"><img src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1000&q=85" alt="A fresh, colorful meal made with greens and vegetables" loading="lazy" /><span>Picked fresh.<br />Made with love.</span></div>
+      <div class="fresh-story-copy"><p class="fresh-kicker">A FRESH TAKE ON TAKEOUT</p><h2>Good food should<br />feel <em>good, too.</em></h2><p>We bring together colorful ingredients, satisfying favorites, and the kind of flavor that makes an ordinary day a little brighter.</p><a class="fresh-text-link" href="#menu">Get to know the menu <span>→</span></a><div class="fresh-story-stats"><div><b>100%</b><small>made with care</small></div><div><b>Every day</b><small>something fresh</small></div></div></div>
+    </section>
+
+    <section class="fresh-cta"><div><p class="fresh-kicker">YOUR NEXT FAVORITE IS WAITING</p><h2>Hungry for a<br /><em>happy little moment?</em></h2></div><a class="fresh-button fresh-button-dark" href="#menu">Order something fresh <span>↗</span></a><span class="fresh-cta-leaf">✿</span></section>
+  </main>
+
+  <footer class="fresh-footer" id="footer"><div class="fresh-footer-main"><a class="site-brand" href="#home"><span class="site-brand-mark">f</span>Freshbite<span class="site-brand-dot">.</span></a><p>Fresh food, happy moments.</p><div class="footer-contact"><small>Customer care</small><a href="tel:8951363700">8951363700</a></div><a class="fresh-back-top" href="#home">Back to top ↑</a></div><div class="fresh-footer-bottom"><small>© <span id="year"></span> Freshbite. Made for your next good meal.</small><span>Fresh choices. Happy days.</span></div></footer>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
+    <div class="drawer-head"><div><p class="eyebrow">YOUR ORDER</p><h2>Your basket</h2></div><button id="cart-close" class="close-btn" aria-label="Close cart">×</button></div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-bottom"><div class="total-row"><span>Subtotal</span><b id="cart-total">₹0</b></div><p class="cart-hint">Delivery fee, if applicable, is confirmed at checkout.</p><button id="checkout-btn" class="primary-btn full-btn">Continue to checkout →</button></div>
+  </aside>
+
+  <dialog id="checkout-dialog"><form id="checkout-form" class="checkout-form">
+    <button type="button" class="close-btn dialog-close" id="checkout-close" aria-label="Close checkout">×</button>
+    <p class="eyebrow">ALMOST THERE</p><h2>Delivery details</h2>
+    <label>Your name<input name="customerName" required minlength="2" placeholder="Full name" /></label>
+    <label>Phone number<input name="phone" required pattern="[0-9 +()-]{8,16}" placeholder="Phone number" /></label>
+    <label>Delivery address<textarea name="address" required minlength="8" placeholder="House number, street, area"></textarea></label>
+    <label>Notes (optional)<textarea name="notes" placeholder="Any special instructions?"></textarea></label>
+    <button class="primary-btn full-btn" type="submit">Place demo order →</button>
+    <p class="cart-hint">Demo checkout only. No payment is collected.</p>
+  </form></dialog>
+
+  <dialog id="order-confirmation" class="order-confirmation" aria-labelledby="confirmation-title"><section class="confirmation-content">
+    <button type="button" class="close-btn dialog-close" id="confirmation-close" aria-label="Close order details">×</button>
+    <p class="eyebrow">ORDER CONFIRMED</p><h2 id="confirmation-title">Thanks for your order!</h2>
+    <p class="confirmation-subtitle">Your order has been saved. Here are the details:</p>
+    <div class="confirmation-meta"><span>Order ID</span><b id="confirmation-order-id"></b></div>
+    <div class="confirmation-meta"><span>Status</span><b id="confirmation-status">Received</b></div>
+    <div class="confirmation-meta"><span>Customer</span><b id="confirmation-customer"></b></div>
+    <div class="confirmation-meta"><span>Phone</span><b id="confirmation-phone"></b></div>
+    <div class="confirmation-meta"><span>Deliver to</span><b id="confirmation-address"></b></div>
+    <h3 class="confirmation-items-title">Your items</h3><div id="confirmation-items" class="confirmation-items"></div>
+    <div class="confirmation-total"><span>Total</span><b id="confirmation-total"></b></div>
+    <div class="confirmation-eta"><span>Estimated delivery</span><b id="confirmation-eta-value"></b></div>
+    <button type="button" id="confirmation-done" class="primary-btn full-btn">Back to menu</button>
+  </section></dialog>
+  <div id="toast" role="status" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>

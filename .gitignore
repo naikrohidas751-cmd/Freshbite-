@@ -1,0 +1,6 @@
+backend/node_modules/
+backend/.env
+backend-java/out/
+backend-java/data/
+*.log
+.DS_Store

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="refresh" content="0; url=freshbite-home.html" />
+  <meta name="description" content="Freshbite - fresh food delivered to your door." />
+  <script>window.location.replace(new URL("freshbite-home.html", window.location.href).href);</script>
+  <title>Freshbite | Food, delivered fresh</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .order-confirmation{width:min(510px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:0;background:var(--cream);overflow:auto}
+    .confirmation-content{position:relative;padding:30px}
+    .confirmation-content h2{font:800 28px Manrope,sans-serif;margin:0 0 8px}
+    .confirmation-subtitle{font-size:13px;color:var(--muted);margin:0 0 18px}
+    .confirmation-meta{display:flex;justify-content:space-between;gap:16px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}
+    .confirmation-meta span{color:var(--muted)}.confirmation-meta b{text-align:right;overflow-wrap:anywhere}
+    .confirmation-items-title{font:700 14px Manrope,sans-serif;margin:18px 0 10px}
+    .confirmation-items{display:grid;gap:9px}
+    .confirmation-item{display:grid;grid-template-columns:1fr auto;gap:3px 12px;background:white;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:12px}
+    .confirmation-item b{color:var(--ink)}.confirmation-item small{color:var(--muted);line-height:1.5}.confirmation-item strong{grid-column:2;grid-row:1/3;color:var(--green);align-self:center;white-space:nowrap}
+    .confirmation-total,.confirmation-eta{display:flex;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid var(--line);font-size:13px}
+    .confirmation-total{margin-top:12px}.confirmation-total b{font-size:18px;color:var(--green)}
+    .confirmation-eta{background:#edf4e4;padding:12px;border-radius:9px;margin:5px 0;color:var(--green)}.confirmation-eta b{text-align:right}
+    .footer-contact{display:grid;gap:4px;font-size:13px}.footer-contact small{color:var(--muted);font-size:11px}.footer-contact a{font-weight:700;color:var(--green)}
+    @media(max-width:450px){.confirmation-content{padding:24px 18px}.confirmation-content h2{font-size:24px}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#"><span class="brand-mark">f</span> freshbite<span class="dot">.</span></a>
+    <nav><a href="#menu">Menu</a><a href="#why-us">Why Freshbite?</a><a href="#footer">Contact</a></nav>
+    <button class="cart-pill" id="cart-open" aria-label="Open cart">🛒 <span id="cart-count">0</span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">GOOD FOOD. GOOD MOOD.</p>
+        <h1>Your next favorite<br /><span>meal is here.</span></h1>
+        <p class="hero-description">Freshly prepared favorites from local kitchens, delivered straight to your door.</p>
+        <a class="primary-btn" href="#menu">Explore the menu <span>↗</span></a>
+        <div class="hero-proof"><span>★★★★★</span> Loved by foodies everywhere</div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-circle"></div>
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=900&q=85" alt="Fresh pizza topped with vegetables" />
+        <div class="floating-note"><span>🍕</span><div><b>Fresh & tasty</b><small>Made just for you</small></div></div>
+      </div>
+    </section>
+
+    <section class="benefits" id="why-us">
+      <div><span class="benefit-icon">⚡</span><div><b>Fast delivery</b><small>Hot food, right on time</small></div></div>
+      <div><span class="benefit-icon">🥬</span><div><b>Fresh ingredients</b><small>Quality in every bite</small></div></div>
+      <div><span class="benefit-icon">♡</span><div><b>Made with care</b><small>Meals you'll love</small></div></div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="section-heading">
+        <div><p class="eyebrow">OUR MENU</p><h2>Find your <span>craving.</span></h2></div>
+        <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Search food..." /></label>
+      </div>
+      <div class="filters" id="category-filters">
+        <button class="filter active" data-category="All">All food</button>
+        <button class="filter" data-category="Pizza">🍕 Pizza</button>
+        <button class="filter" data-category="Burgers">🍔 Burgers</button>
+        <button class="filter" data-category="Bowls">🥗 Bowls</button>
+        <button class="filter" data-category="Desserts">🍰 Desserts</button>
+      </div>
+      <p id="api-status" class="api-status">Loading today's menu…</p>
+      <div class="food-grid" id="food-grid"></div>
+    </section>
+
+    <section class="cta">
+      <div><p class="eyebrow">A LITTLE TREAT?</p><h2>Good food is always<br />a <span>good idea.</span></h2><p>Choose your favorites and let us handle the rest.</p></div>
+      <a class="primary-btn" href="#menu">Order something good ↗</a>
+    </section>
+  </main>
+
+  <footer id="footer"><a class="brand" href="#"><span class="brand-mark">f</span> freshbite<span class="dot">.</span></a><p>Fresh food, happy moments.</p><div class="footer-contact"><small>Customer care</small><a href="tel:8951363700">8951363700</a></div><small>© <span id="year"></span> Freshbite. Student portfolio project.</small></footer>
+
+  <div class="drawer-backdrop" id="drawer-backdrop"></div>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping cart" aria-hidden="true">
+    <div class="drawer-head"><div><p class="eyebrow">YOUR ORDER</p><h2>Your basket</h2></div><button id="cart-close" class="close-btn" aria-label="Close cart">×</button></div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="cart-bottom"><div class="total-row"><span>Subtotal</span><b id="cart-total">₹0</b></div><p class="cart-hint">Delivery fee, if applicable, is confirmed at checkout.</p><button id="checkout-btn" class="primary-btn full-btn">Continue to checkout →</button></div>
+  </aside>
+
+  <dialog id="checkout-dialog">
+    <form id="checkout-form" class="checkout-form">
+      <button type="button" class="close-btn dialog-close" id="checkout-close" aria-label="Close checkout">×</button>
+      <p class="eyebrow">ALMOST THERE</p><h2>Delivery details</h2>
+      <label>Your name<input name="customerName" required minlength="2" placeholder="Full name" /></label>
+      <label>Phone number<input name="phone" required pattern="[0-9 +()-]{8,16}" placeholder="Phone number" /></label>
+      <label>Delivery address<textarea name="address" required minlength="8" placeholder="House number, street, area"></textarea></label>
+      <label>Notes (optional)<textarea name="notes" placeholder="Any special instructions?"></textarea></label>
+      <button class="primary-btn full-btn" type="submit">Place demo order →</button>
+      <p class="cart-hint">Demo checkout only. No payment is collected.</p>
+    </form>
+  </dialog>
+  <dialog id="order-confirmation" class="order-confirmation" aria-labelledby="confirmation-title">
+    <section class="confirmation-content">
+      <button type="button" class="close-btn dialog-close" id="confirmation-close" aria-label="Close order details">×</button>
+      <p class="eyebrow">ORDER CONFIRMED</p>
+      <h2 id="confirmation-title">Thanks for your order!</h2>
+      <p class="confirmation-subtitle">Your order has been saved. Here are the details:</p>
+      <div class="confirmation-meta"><span>Order ID</span><b id="confirmation-order-id"></b></div>
+      <div class="confirmation-meta"><span>Status</span><b id="confirmation-status">Received</b></div>
+      <div class="confirmation-meta"><span>Customer</span><b id="confirmation-customer"></b></div>
+      <div class="confirmation-meta"><span>Phone</span><b id="confirmation-phone"></b></div>
+      <div class="confirmation-meta"><span>Deliver to</span><b id="confirmation-address"></b></div>
+      <h3 class="confirmation-items-title">Your items</h3>
+      <div id="confirmation-items" class="confirmation-items"></div>
+      <div class="confirmation-total"><span>Total</span><b id="confirmation-total"></b></div>
+      <div class="confirmation-eta"><span>Estimated delivery</span><b id="confirmation-eta-value"></b></div>
+      <button type="button" id="confirmation-done" class="primary-btn full-btn">Back to menu</button>
+    </section>
+  </dialog>
+  <div id="toast" role="status" class="toast"></div>
+  <script src="script.js"></script>
+</body>
+</html>
