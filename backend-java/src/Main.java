@@ -47,7 +47,7 @@ public class Main {
         String path = exchange.getRequestURI().getPath();
         boolean adminPage = "/admin".equals(path) || "/admin/".equals(path) || "/admin.js".equals(path);
         if (adminPage && !requireAdminAccess(exchange)) return;
-        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod()) && !"HEAD".equalsIgnoreCase(exchange.getRequestMethod())) {
             send(exchange, 405, Map.of("message", "Method not allowed."));
             return;
         }
@@ -103,6 +103,8 @@ public class Main {
         exchange.getResponseHeaders().set("Content-Type", contentType);
         exchange.getResponseHeaders().set("Cache-Control", "no-store");
         exchange.getResponseHeaders().set("X-Content-Type-Options", "nosniff");
+        boolean headRequest = "HEAD".equalsIgnoreCase(exchange.getRequestMethod());
+        if (headRequest) { exchange.sendResponseHeaders(200, -1); exchange.close(); return; }
         exchange.sendResponseHeaders(200, bytes.length);
         try (var output = exchange.getResponseBody()) { output.write(bytes); }
     }
@@ -116,6 +118,7 @@ public class Main {
         }
         String path = exchange.getRequestURI().getPath();
         String method = exchange.getRequestMethod();
+        if ("HEAD".equalsIgnoreCase(method)) method = "GET";
         try {
             if ("GET".equals(method) && "/api/health".equals(path)) {
                 send(exchange, 200, Map.of("status", "ok", "service", "Freshbite JDK API"));
@@ -312,6 +315,7 @@ public class Main {
     private static void send(HttpExchange exchange, int status, Object body) throws IOException {
         byte[] bytes = Json.stringify(body).getBytes(StandardCharsets.UTF_8);
         exchange.getResponseHeaders().set("Content-Type", "application/json; charset=utf-8");
+        if ("HEAD".equalsIgnoreCase(exchange.getRequestMethod())) { exchange.sendResponseHeaders(status, -1); exchange.close(); return; }
         exchange.sendResponseHeaders(status, bytes.length);
         try (var output = exchange.getResponseBody()) { output.write(bytes); }
     }
